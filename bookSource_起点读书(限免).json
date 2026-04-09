@@ -1,0 +1,48 @@
+[
+  {
+    "bookSourceComment": "勿下载",
+    "bookSourceName": "起点读书(限免)",
+    "bookSourceType": 0,
+    "bookSourceUrl": "http://183.131.85.51:58026",
+    "concurrentRate": "1/3000",
+    "customButton": false,
+    "customOrder": 2,
+    "enabled": true,
+    "enabledCookieJar": true,
+    "enabledExplore": false,
+    "eventListener": false,
+    "header": "{\"User-Agent\":\"Mozilla/mobile QDReaderAndroid/7.9.248/804/1000023\"}",
+    "lastUpdateTime": 1775674286754,
+    "loginUi": "[\n    {\n        \"name\": \"cdkey\",\n        \"title\": \"卡密\",\n        \"type\": \"text\",\n        \"default\": \"\"\n    }\n]\n",
+    "loginUrl": "<js>\nfunction login(){\n    var cdkey = String(source.getLoginInfoMap().get(\"cdkey\"));\n    if(!cdkey){\n     \n        return;\n    }\n \n    source.put(\"cdkey\", cdkey);\n   \n}\nlogin();\n</js>\n",
+    "respondTime": 180000,
+    "ruleBookInfo": {
+      "author": "$.authorName||'未知作者'",
+      "canReName": "true",
+      "coverUrl": "$.coverUrl||''",
+      "intro": "$.intro||'无简介'",
+      "name": "$.bookName||'未知书名'",
+      "tocUrl": "\n\n<js>\n\nvar cdkey = String(source.getLoginInfoMap().get(\"cdkey\"))\nparams=java.get(\"myBookId\");\n\n'http://183.131.85.51:58026/getCatalog?bookId='+params+'&token='+cdkey;\n\n\n</js>"
+    },
+    "ruleContent": {
+      "content": "$.content"
+    },
+    "ruleExplore": {},
+    "ruleSearch": {
+      "author": "$.authorName",
+      "bookList": "$.bookList[*]",
+      "bookUrl": "<js>\n\nvar cdkey = String(source.getLoginInfoMap().get(\"cdkey\"))\nparams={{$.bookId}}\njava.put(\"myBookId\", params);\n'http://183.131.85.51:58026/getCatalog?bookId='+params+'&token='+cdkey;\n</js>",
+      "coverUrl": "https://qidian.qpic.cn/qdbimg/349573/{$.bookId}/600",
+      "intro": "$.intro||'无简介'",
+      "name": "bookName"
+    },
+    "ruleToc": {
+      "chapterList": "$.catalog[*]",
+      "chapterName": "$.chapterName",
+      "chapterUrl": "@js:\nvar arr = baseUrl.match(/bookId=(\\d+)/);\nvar bid = arr ? arr[1] : \"\";\nvar cdkey = String(source.getLoginInfoMap().get(\"cdkey\"))\n\n\n\n'http://183.131.85.51:58026/getchapter?bookId='+bid+'&chapterId={{$.chapterId}}'+'&token='+cdkey\n",
+      "isVip": "$.isVip||0"
+    },
+    "searchUrl": "@js:\n'http://183.131.85.51:58026/searchbook?keyword={{key}}&p={{page}}&token='+source.get(\"cdkey\")",
+    "weight": 0
+  }
+]
