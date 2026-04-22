@@ -1,0 +1,53 @@
+[
+  {
+    "bookSourceComment": "勿下载，修改源变量值切换评论页数",
+    "bookSourceName": "起点读书(限免+本章说点购买)",
+    "bookSourceType": 0,
+    "bookSourceUrl": "http://101.200.42.234:15380",
+    "concurrentRate": "1/3000",
+    "customButton": false,
+    "customOrder": 0,
+    "enabled": true,
+    "enabledCookieJar": true,
+    "enabledExplore": false,
+    "eventListener": false,
+    "header": "{\"User-Agent\":\"Mozilla/mobile QDReaderAndroid/7.9.248/804/1000023\"}",
+    "lastUpdateTime": 1776842430826,
+    "loginUi": "[\n    {\n        \"name\": \"cdkey\",\n        \"title\": \"卡密\",\n        \"type\": \"text\",\n        \"default\": \"\"\n    }\n]\n",
+    "loginUrl": "<js>\nfunction login(){\n    var cdkey = String(source.getLoginInfoMap().get(\"cdkey\"));\n    if(!cdkey){\n        return;\n    }\n    source.put(\"cdkey\", cdkey);\n}\nlogin();\n</js>\n",
+    "respondTime": 180000,
+    "ruleBookInfo": {
+      "author": "$.authorName||'未知作者'",
+      "canReName": "true",
+      "coverUrl": "https://qidian.qpic.cn/qdbimg/349573/{$.bookId}/600",
+      "intro": "$.description||'无简介'",
+      "kind": "$.categoryName&&$.subCategoryName",
+      "name": "$.bookName||'未知书名'",
+      "tocUrl": "<js>\nvar cdkey = source.getLoginInfoMap().get(\"cdkey\");\nvar params=java.get(\"myBookId\");\n'http://101.200.42.234:15380/getCatalog?bookId='+params+'&token='+cdkey;\n</js>",
+      "wordCount": "$.wordsCount"
+    },
+    "ruleContent": {
+      "content": "$.content",
+      "payAction": "<js>\nvar arr = baseUrl.match(/bookId=(\\d+)/);\nvar bid = arr ? arr[1] : '';\nvar chapterMatch = baseUrl.match(/chapterId=(\\d+)/i);\nvar chapterid = chapterMatch ? chapterMatch[1] : '';\nvar bookid = bid;\nvar token = source.get(\"cdkey\");\nvar pg = source.getVariable() || 1;\nvar pz = 15;\nvar cursorid = '0';\n\nfunction loadPage(pg) {\n    var url = 'http://101.200.42.234:15380/chapterreviewparagraph?bookid=' + bookid\n        + '&chapterid=' + chapterid\n        + '&pg=' + pg\n        + '&pz=' + pz\n        + '&cursorid=' + cursorid\n        + '&token=' + token;\n    var res = java.ajax(url);\n    return JSON.parse(res);\n}\n\nvar json = loadPage(pg);\nvar commentHTML = '';\n\nfunction cleanContent(str) {\n    return (str || '').replace(/\\[fn=\\d+\\]/g, '').trim();\n}\n\nvar moreSegs = json.Data ? json.Data.ParagraphsInfos : [];\nfor (var i = 0; i < moreSegs.length; i++) {\n    var seg = moreSegs[i];\n    var list = seg.DataList || [];\n    var quote = list[0] ? list[0].RefferContent : '段落评论';\n    var blockImgHtml = '';\n    if (seg.BlockImgUrl) {\n        blockImgHtml = '<img src=\"' + seg.BlockImgUrl + '\" class=\"chapter-img\" style=\"max-width:100%;border-radius:8px;margin:8px 0;display:block;\">';\n    }\n    commentHTML += '<div class=\"segment\"><div class=\"quote\">' + quote + '</div>' + blockImgHtml;\n    for (var j = 0; j < list.length; j++) {\n        var c = list[j];\n        if (!c.Id) continue;\n        var avatar = c.UserHeadIcon || '';\n        var name = c.UserName || '匿名';\n        var ip = c.IpLocation ? '(' + c.IpLocation + ')' : '';\n        var content = cleanContent(c.Content);\n        var isReply = c.IsReplyReview === 1 || c.RefferCommentId > 0;\n        var style = isReply ? 'margin-left:24px;' : '';\n        commentHTML += '<div class=\"comment\" style=\"' + style + '\"><img class=\"avatar\" src=\"' + avatar + '\"><div class=\"comment-body\"><div class=\"name\">' + name + ' ' + ip + '</div><div class=\"content\">' + content + '</div></div></div>';\n    }\n    commentHTML += '</div><div class=\"split\"></div>';\n}\n\ncommentHTML += '<div style=\"text-align:center;margin:30px 0;color:#888;\">当前第 ' + pg + ' 页</div>';\n\nvar html = '<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><title>第' + pg + '页-本章说</title><style>body{background:#1e1e1e;color:#fff;padding:16px;font-size:16px;line-height:1.6}.comment{display:flex;gap:10px;background:#2b2b2b;padding:12px 14px;border-radius:8px;margin-bottom:10px;align-items:flex-start}.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0}.comment-body{flex:1}.name{color:#60d9ff;font-weight:bold}.content{margin-top:4px}.segment{margin-bottom:10px}.quote{background:#333;color:#bbb;padding:10px 14px;border-left:3px solid #777;border-radius:6px;margin-bottom:10px}.split{height:1px;background:#444;margin:20px 0}.chapter-img{max-width:100%;border-radius:8px;margin:8px 0;display:block}</style></head><body>' + commentHTML + '</body></html>';\n\nvar b64 = java.base64Encode(html);\nvar url = 'data:text/html;base64,' + b64;\njava.startBrowser(url, '本章说');\n</js>"
+    },
+    "ruleExplore": {},
+    "ruleSearch": {
+      "author": "$.authorName",
+      "bookList": "$.bookList",
+      "bookUrl": "<js>\nvar cdkey = source.getLoginInfoMap().get(\"cdkey\");\nvar params={{$.bookId}};\njava.put(\"myBookId\", params);\n'http://101.200.42.234:15380/getCatalog?bookId='+params+'&token='+cdkey;\n</js>",
+      "coverUrl": "https://qidian.qpic.cn/qdbimg/349573/{$.bookId}/600",
+      "intro": "$.description||'无简介'",
+      "kind": "$.categoryName&&$.subCategoryName",
+      "name": "$.bookName",
+      "wordCount": "$.wordsCount"
+    },
+    "ruleToc": {
+      "chapterList": "$.catalog",
+      "chapterName": "$.chapterName",
+      "chapterUrl": "<js>\nvar arr = baseUrl.match(/bookId=(\\d+)/);\nvar bid = arr ? arr[1] : '';\nsource.put(\"bid\", bid);\nvar cdkey = source.getLoginInfoMap().get(\"cdkey\");\n'http://101.200.42.234:15380/getchapter?bookId='+bid+'&chapterId={{$.chapterId}}&token='+cdkey;\n</js>",
+      "isVip": "$.isVip||0"
+    },
+    "searchUrl": "@js:('http://101.200.42.234:15380/searchbook?keyword={{key}}&p={{page}}&token='+source.get('cdkey'))",
+    "weight": 0
+  }
+]
