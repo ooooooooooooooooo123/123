@@ -44,7 +44,8 @@
       "chapterList": "$.catalog[*]",
       "chapterName": "$.chapterName",
       "chapterUrl": "@js:\nvar arr = baseUrl.match(/bookId=(\\d+)/);\nvar bid = arr ? arr[1] : \"\";\nsource.put(\"bid\", bid);\n\n\nvar cdkey = String(source.getLoginInfoMap().get(\"cdkey\"))\n\n\nc='http://101.200.42.234:15380/getchapter?bookId='+bid+'&chapterId={{$.chapterId}}'+'&token='+cdkey\n\n",
-      "isVip": "$.isVip||0"
+      "isVip": "$.isVip||0",
+      "updateTime": "DisplayTime"
     },
     "searchUrl": "@js:\n'http://101.200.42.234:15380/searchbook?keyword={{key}}&p={{page}}&token='+source.get(\"cdkey\")",
     "weight": 0
