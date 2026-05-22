@@ -4,7 +4,7 @@
     "bookSourceName": "起点读书限免+本章说",
     "bookSourceType": 0,
     "bookSourceUrl": "http://101.200.42.234:15380",
-    "concurrentRate": "1/2000",
+    "concurrentRate": "1/3000",
     "customButton": false,
     "customOrder": 1,
     "enabled": true,
