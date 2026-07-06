@@ -1,0 +1,51 @@
+[
+  {
+    "bookSourceComment": "番茄小说-限免卡密互通",
+    "bookSourceName": "番茄小说",
+    "bookSourceType": 0,
+    "bookSourceUrl": "http://101.200.42.234:15384",
+    "concurrentRate": "1/3000",
+    "customOrder": 1,
+    "enabled": true,
+    "enabledCookieJar": true,
+    "enabledExplore": false,
+    "header": "{\"User-Agent\":\"Mozilla/5.0\"}",
+    "lastUpdateTime": 1783336099096,
+    "loginUi": "[\n    {\n        \"name\": \"cdkey\",\n        \"title\": \"卡密\",\n        \"type\": \"text\",\n        \"default\": \"\"\n    }\n]\n",
+    "loginUrl": "<js>\nfunction login(){\n    var cdkey = String(source.getLoginInfoMap().get(\"cdkey\"));\n    if(!cdkey) return;\n    source.put(\"cdkey\", cdkey);\n}\nlogin();\n</js>\n",
+    "respondTime": 180000,
+    "ruleBookInfo": {
+      "author": "$.authorName||'未知作者'",
+      "canReName": "true",
+      "coverUrl": "$.coverUrl||''",
+      "intro": "$.description||'无简介'",
+      "kind": "$.kind",
+      "name": "$.bookName||'未知书名'",
+      "tocUrl": "@js:\nvar cdkey = source.get(\"cdkey\");\nvar bid = java.get(\"myBookId\");\n'http://101.200.42.234:15384/fq/getcatalog?bookId=' + bid + '&token=' + cdkey;",
+      "wordCount": "$.wordsCount"
+    },
+    "ruleContent": {
+      "content": "$.content",
+      "title": "$.chapterName"
+    },
+    "ruleExplore": {},
+    "ruleReview": {},
+    "ruleSearch": {
+      "author": "$.authorName",
+      "bookList": "$.bookList[*]",
+      "bookUrl": "@js:\nvar cdkey = source.get(\"cdkey\");\nvar bid = String(java.getString(\"$.bookId\"));\njava.put(\"myBookId\", bid);\n'http://101.200.42.234:15384/fq/searchbook?keyword=' + bid + '&token=' + cdkey;",
+      "coverUrl": "$.coverUrl",
+      "intro": "$.description",
+      "kind": "$.kind",
+      "name": "$.bookName",
+      "wordCount": "$.wordsCount"
+    },
+    "ruleToc": {
+      "chapterList": "$.catalog[*]",
+      "chapterName": "$.chapterName",
+      "chapterUrl": "@js:\nvar cdkey = source.get(\"cdkey\");\nvar bid = java.get(\"myBookId\");\n'http://101.200.42.234:15384/fq/getchapter?bookId=' + bid + '&chapterId=' + java.getString(\"$.chapterId\") + '&token=' + cdkey;"
+    },
+    "searchUrl": "@js:\nvar cdkey = source.get(\"cdkey\");\n'http://101.200.42.234:15384/fq/searchbook?keyword=' + encodeURIComponent(key) + '&token=' + cdkey;",
+    "weight": 0
+  }
+]
